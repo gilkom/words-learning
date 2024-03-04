@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
+from rest_framework.authentication import SessionAuthentication
 
 
 # Create your views here.
@@ -22,8 +23,6 @@ from django.http import JsonResponse
 class WordViewSet(viewsets.ModelViewSet):
     queryset = Word.objects.all()
     serializer_class = WordSerializer
-    #permission_classes = [AllowAny]
-    #permission_classes=[IsAdminUser]
     permission_classes=[IsAuthenticated]
 
 class UserWordsViewSet(viewsets.ModelViewSet):
@@ -103,6 +102,20 @@ class RegistrationAPIView(CreateAPIView):
     model = User
     permission_classes = [AllowAny]
 
+'''class LoginView(views.APIView):
+    permission_classes = [AllowAny]
+    #authentication_classes = [SessionAuthentication]
+
+    def post(self, request, format=None):
+        serializer = serializers.LoginSerializer(data=self.request.data,
+                                                 context={'request': self.request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        response = Response({'username': user.username}, status=status.HTTP_202_ACCEPTED)
+        return response
+'''
+
 class LoginView(views.APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -113,7 +126,6 @@ class LoginView(views.APIView):
         user = serializer.validated_data['user']
         login(request, user)
         return Response({'username':user.username}, status=status.HTTP_202_ACCEPTED)
-
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.AllowAny,)

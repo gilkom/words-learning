@@ -1,13 +1,37 @@
 <script>
     import {WordStore} from '../../word-store'
     import {onMount} from 'svelte'
+    import { authStore } from '../../stores/auth.js';
+    import { goto } from '$app/navigation';
+
 
     onMount(async function () {
+        console.log("1")
         if (!$WordStore.length) {
-            const endpoint = 'http://localhost:8000/words/'
-            const response = await fetch(endpoint)
-            const data = await response.json() 
-            WordStore.set(data)
+            console.log("2")
+            if (!$authStore.loggedIn){
+                console.log("3")
+                goto('/login');
+                return;
+            }
+
+            try {
+                console.log("4")
+            const endpoint = 'http://localhost:8000/words/';
+            const response = await fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                'Content-Type': 'application/json',      
+                },
+                mode: 'cors',
+                credentials: 'include' 
+            });
+            console.log('ffloggedIn:', $authStore.loggedIn);
+            const data = await response.json();
+            WordStore.set(data);
+            }catch(error){
+                console.error(error);
+            }
         }
     })
 

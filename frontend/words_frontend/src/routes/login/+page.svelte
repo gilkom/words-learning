@@ -1,60 +1,3 @@
-<!--<script>
-    import {goto} from '$app/navigation';
-    let username = ''
-    let password = ''
-    let errors = {}
-
-    let handleSubmit = () => {
-        const endpoint = 'http://localhost:8000/login/'
-        const requestOptions = {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username: username, password: password})
-        }
-
-        fetch(endpoint, requestOptions)
-            .then(response => response.text().then(data => ({status: response.status, body:data})))
-            .then(data =>{
-                if(data.status === 202){
-                    console.log(data)
-                    goto('/')
-                }else{
-                    errors = data.body
-                    console.log(data)
-                }
-            })
-    }
-</script>
-
-
-<div class="col-12 col-md-4">
-    <h2 class ="my-4">Login</h2>
-
-    <form on:submit|preventDefault={handleSubmit}>
-        <div class="mb-3">
-            <input class="form-control" type="text" placeholder="username" bind:value={username}>
-
-            {#if errors && errors.username }
-                <p class="text-danger">{errors.username[0]}</p>
-            {/if}
-        </div>
-        <div class="mb-3">
-            <input class="form-control" type="password" placeholder="password" bind:value={password}>
-
-            {#if errors && errors.password }
-                <p class="text-danger">{errors.password[0]}</p>
-            {/if}
-        </div>
-        {#if errors && errors.general}
-            <div class="mb-3">
-                <p class="text-danger">{errors.general[0]}</p>
-            </div>
-        {/if}
-
-        <button class="btn btn-primary" type="submit">Login</button>
-    </form>
-</div>
--->
 <script>
     import { onMount } from 'svelte';
     import { authStore, setLoggedIn, logout as logoutAction } from '../../stores/auth.js';
@@ -71,7 +14,8 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ username, password }),
+                mode: 'cors',
             });
 
             if (response.ok) {
@@ -95,6 +39,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                mode: 'cors',
             });
 
             if (response.ok) {
