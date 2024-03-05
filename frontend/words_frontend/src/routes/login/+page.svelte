@@ -21,7 +21,6 @@
             if (response.ok) {
                 const data = await response.json();
                 setLoggedIn(true, data.username);
-                //goto('/');
             } else {
                 const data = await response.json();
                 throw new Error(data.error);
@@ -31,29 +30,6 @@
             error = 'Błąd logowania. Spróbuj ponownie.';
         }
     };
-
-    const logout = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/logout/', {
-                method: 'POST', // Zakładając, że wylogowanie wymaga metody POST
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors',
-            });
-
-            if (response.ok) {
-                logoutAction(); // Wylogowanie użytkownika z użyciem funkcji z store
-                goto('/login'); // Przekierowanie na stronę logowania po wylogowaniu
-            } else {
-                throw new Error('Błąd podczas wylogowywania');
-            }
-        } catch (error) {
-            console.error(error);
-            // Obsługa błędu wylogowywania
-        }
-    };
-
     onMount(() => {
         if(!$authStore.loggedIn){
             fetch('http://localhost:8000/check_login_status/')
@@ -83,7 +59,6 @@
 {#if $authStore.loggedIn}
     <div>
         <h1>Witaj {$authStore.userData}!</h1>
-        <button on:click={logout}>Wyloguj</button>
     </div>
 {:else}
     <p>{error}</p>

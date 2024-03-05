@@ -1,3 +1,8 @@
+<script>
+  import { authStore } from "../stores/auth";
+
+
+</script>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Navbar</a>
@@ -6,15 +11,24 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+          {#if $authStore.loggedIn}
             <li class="nav-item">
                 <a class="nav-link" href="/words">Words List</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
+              <a class="nav-link" href="/userwords">User Words List</a>
+          </li>            
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
             </li>
+            {:else}
             <li class="nav-item">
               <a class="nav-link" href="/login">Login</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Register</a>
+            </li>
+            {/if}
         </ul>
       </div>
     </div>
