@@ -17,12 +17,15 @@
             const response = await fetch(endpoint, {
                 method: 'GET',
                 headers: {
-                'Content-Type': 'application/json',      
+                'Content-Type': 'application/json',
+                'x-user': $authStore.id,  
                 },
                 mode: 'cors',
                 credentials: 'include' 
             });
             const data = await response.json();
+            
+            //console.log(JSON.stringify(data))
             UserWordStore.set(data);
             }catch(error){
                 console.error(error);

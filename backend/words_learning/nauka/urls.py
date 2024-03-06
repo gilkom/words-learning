@@ -15,5 +15,5 @@ urlpatterns += [
     path('register/', RegistrationAPIView.as_view()),
     path('login/', LoginView.as_view()),
     path('logout/', LogoutView.as_view()),
-    path('check_login_status/', check_login_status, name='check_login_status'),
+    #path('check_login_status/', check_login_status, name='check_login_status'),
 ]

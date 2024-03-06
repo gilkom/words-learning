@@ -43,6 +43,7 @@ class LoginSerializer(serializers.Serializer):
         trim_whitespace=False,
         write_only=True
     )
+    user_id = serializers.IntegerField(read_only=True) 
 
     def validate(self, attrs):
         username = attrs.get('username')
@@ -60,4 +61,5 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(msg, code='authorization')
         
         attrs['user'] = user
+        attrs['user_id'] = user.id
         return attrs

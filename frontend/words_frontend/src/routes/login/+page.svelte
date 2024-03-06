@@ -12,15 +12,15 @@
             const response = await fetch('http://localhost:8000/login/', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ username, password }),
-                mode: 'cors',
+                mode: 'cors',                
             });
 
             if (response.ok) {
                 const data = await response.json();
-                setLoggedIn(true, data.username);
+                setLoggedIn(true, data.username, data.id);
             } else {
                 const data = await response.json();
                 throw new Error(data.error);
@@ -29,7 +29,7 @@
             console.error(error);
             error = 'Błąd logowania. Spróbuj ponownie.';
         }
-    };
+    };/*
     onMount(() => {
         if(!$authStore.loggedIn){
             fetch('http://localhost:8000/check_login_status/')
@@ -53,7 +53,7 @@
                     }
                 });
         }
-    });
+    });*/
 </script>
 
 {#if $authStore.loggedIn}

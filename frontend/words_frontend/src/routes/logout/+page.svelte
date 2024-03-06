@@ -21,7 +21,7 @@
 
             if (response.ok) {
                 logoutAction(); // Wylogowanie użytkownika z użyciem funkcji z store
-                allStores.forEach(store => store.reset({}));
+                allStores.forEach(store => store.set([]));
                 goto('/login'); // Przekierowanie na stronę logowania po wylogowaniu
             } else {
                 throw new Error('Błąd podczas wylogowywania');

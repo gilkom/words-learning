@@ -25,29 +25,17 @@ class WordViewSet(viewsets.ModelViewSet):
     serializer_class = WordSerializer
     permission_classes=[IsAuthenticated]
 
+    
+
 class UserWordsViewSet(viewsets.ModelViewSet):
     serializer_class = WordSerializer
     permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.user
+        user = self.request.headers.get('x-user');
         return Word.objects.filter(owner=user)
-'''
-class WordToLearnViewSet(viewsets.ViewSet):
-    serializer_class = WordSerializer
-    #permission_classes = [MyCustomPermission]
 
-    def list(self, request):
-        all_words = Word.objects.all()
 
-        #words_not_learned = all_words.exclude(word_id=Learning.objects.filter(owner=request.user).values_list('word_id', flat=True))
-        words_learned_ids = Learning.objects.filter(owner=request.user, completed=True).values_list('word_id', flat=True).distinct()
-
-        words_to_learn = all_words.exclude(word_id__in=words_learned_ids)
-
-        serializer = self.serializer_class(words_to_learn, many=True)
-        return Response(serializer.data)
-'''
 class WordToLearnViewSet(viewsets.ViewSet):
     serializer_class = WordSerializer
 
@@ -102,19 +90,6 @@ class RegistrationAPIView(CreateAPIView):
     model = User
     permission_classes = [AllowAny]
 
-'''class LoginView(views.APIView):
-    permission_classes = [AllowAny]
-    #authentication_classes = [SessionAuthentication]
-
-    def post(self, request, format=None):
-        serializer = serializers.LoginSerializer(data=self.request.data,
-                                                 context={'request': self.request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        login(request, user)
-        response = Response({'username': user.username}, status=status.HTTP_202_ACCEPTED)
-        return response
-'''
 
 class LoginView(views.APIView):
     permission_classes = (permissions.AllowAny,)
@@ -124,21 +99,23 @@ class LoginView(views.APIView):
                                                  context={'request': self.request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+        user_id = serializer.validated_data['user_id']
         login(request, user)
-        return Response({'username':user.username}, status=status.HTTP_202_ACCEPTED)
+        return Response({'username':user.username, 'id':user_id}, status=status.HTTP_202_ACCEPTED)
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.AllowAny,)
     #@login_required
     def post(self, request, format=None):
         logout(request)
+        request.session.clear()
         return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
     
     '''def get(self, request, format=None):
         logout(request)
         return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
     '''
-
+'''
 @api_view(['GET'])
 def check_login_status(request):
     if request.user.is_authenticated:
@@ -150,3 +127,4 @@ def check_login_status(request):
         return JsonResponse({'user': user})
     else:
         return Response({'error': 'Unauthorized'}, status=401)
+        '''
