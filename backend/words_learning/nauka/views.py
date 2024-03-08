@@ -23,7 +23,7 @@ from rest_framework.authentication import SessionAuthentication
 class WordViewSet(viewsets.ModelViewSet):
     queryset = Word.objects.all()
     serializer_class = WordSerializer
-    permission_classes=[IsAuthenticated]
+    permission_classes=[IsAdminUser]
 
     
 
@@ -32,7 +32,10 @@ class UserWordsViewSet(viewsets.ModelViewSet):
     permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.headers.get('x-user');
+        user = self.request.headers.get('x-user')
+        #Dla api svelte jest x-user
+        if user is None:
+            user = self.request.user
         return Word.objects.filter(owner=user)
 
 
