@@ -15,7 +15,8 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ username, password }),
-                mode: 'cors',                
+                mode: 'cors',
+                credentials: 'include',                
             });
 
             if (response.ok) {

@@ -18,7 +18,7 @@
                 method: 'GET',
                 headers: {
                 'Content-Type': 'application/json',
-                'x-user': $authStore.id,  
+                //'x-user': $authStore.id,  
                 },
                 mode: 'cors',
                 credentials: 'include' 

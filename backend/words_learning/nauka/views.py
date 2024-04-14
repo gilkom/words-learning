@@ -108,11 +108,37 @@ class LoginView(views.APIView):
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.AllowAny,)
-    #@login_required
-    def post(self, request, format=None):
-        logout(request)
-        request.session.clear()
-        return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+
+    def get(self, request, format=None):
+        print("django początek:")
+        print(request)
+        print("Zawartość request:")
+        print("Użytkownik:", request.user)  # Zalogowany użytkownik (lub anonimowy)
+        print("Sesja:", request.session)  # Zawartość sesji
+        print("Ciasteczka:", request.COOKIES)  # Wszystkie ciasteczka w żądaniu
+        print("IP:", request.META.get('REMOTE_ADDR'))  # Adres IP klienta
+        print("User-Agent:", request.META.get('HTTP_USER_AGENT'))  # User-Agent przeglądarki
+        print("Metoda:", request.method)  # Metoda HTTP (GET, POST, itp.)
+        print("GET params:", request.GET)  # Parametry GET
+        print("POST params:", request.POST)  # Parametry POST
+        print("Dane plików:", request.FILES)  # Dane plików przesłanych z formularza
+        if request.user.is_authenticated:
+            print("wykonuje logout w django1")
+            logout(request)
+            print("wykonuje logout w django2")
+            #request.session.flush()  # Usunięcie wszystkich kluczy sesji
+            print("wykonuje logout w django3")
+            response = JsonResponse({"detail": "Successfully logged out."})
+            print("wykonuje logout w django4")
+            
+            #response.delete_cookie('sessionid', path='/')  # Usunięcie ciasteczka sessionid
+            #response.delete_cookie('csrftoken', path='/')  # Usunięcie ciasteczka csrftoken
+        else:
+            response = JsonResponse({"detail": "You are not logged in."})
+            #request.session.flush()
+            #response.delete_cookie('sessionid', path='/')  # Usunięcie ciasteczka sessionid
+            #response.delete_cookie('csrftoken', path='/')  # Usunięcie ciasteczka csrftoken
+        return response
     
     '''def get(self, request, format=None):
         logout(request)
