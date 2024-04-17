@@ -30,7 +30,14 @@
             console.error(error);
             error = 'Błąd logowania. Spróbuj ponownie.';
         }
-    };/*
+    };
+    onMount(() => {
+    if (localStorage.getItem('authState')) {
+        setLoggedIn(true);
+    }
+});
+    
+    /*
     onMount(() => {
         if(!$authStore.loggedIn){
             fetch('http://localhost:8000/check_login_status/')
