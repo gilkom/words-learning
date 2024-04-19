@@ -39,32 +39,7 @@
             setLoggedIn(loggedIn, userData, id);
         }
 });
-    
-    /*
-    onMount(() => {
-        if(!$authStore.loggedIn){
-            fetch('http://localhost:8000/check_login_status/')
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else if (response.status === 401) {
-                        throw new Error('Nieautoryzowany');
-                    } else {
-                        throw new Error('Błąd podczas sprawdzania statusu logowania');
-                    }
-                })
-                .then(data => {
-                    setLoggedIn(true, data.username);
-                    goto('/');
-                })
-                .catch(error => {
-                    console.error(error);
-                    if (error.message === 'Nieautoryzowany') {
-                        // Obsługa błędu 401
-                    }
-                });
-        }
-    });*/
+
 </script>
 
 {#if $authStore.loggedIn}
@@ -81,7 +56,7 @@
                 <input class="form-control" type="text" placeholder="username" bind:value={username}>
             </div>
             <div class="mb-3">
-                <input class="form-control" type="password" placeholder="password" bind:value={password}>
+                <input class="form-control" type="password" placeholder="password" bind:value={password} autocomplete="on">
             </div>
     
             <button class="btn btn-primary" type="submit">Login</button>
