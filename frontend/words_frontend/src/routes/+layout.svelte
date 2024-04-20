@@ -11,9 +11,11 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           {#if $authStore.loggedIn}
+          {#if $authStore.loggedIn && !$authStore.regular}
             <li class="nav-item">
                 <a class="nav-link" href="/words">Words List</a>
             </li>
+          {/if}
             <li class="nav-item">
               <a class="nav-link" href="/userwords">User Words List</a>
           </li>            
@@ -33,6 +35,13 @@
     </div>
   </nav>
 
+  {#if $authStore.loggedIn}
+  <div class="container">
+    <div class="row">
+        <p class="text-end">User: {$authStore.userData}</p>      
+    </div>
+  </div>
+  {/if}
 <div class="container">
     <slot />
 </div>

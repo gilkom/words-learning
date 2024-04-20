@@ -103,8 +103,10 @@ class LoginView(views.APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         user_id = serializer.validated_data['user_id']
+        regular_user = False if user.is_superuser else True
+
         login(request, user)
-        return Response({'username':user.username, 'id':user_id}, status=status.HTTP_202_ACCEPTED)
+        return Response({'username':user.username, 'id':user_id, 'regular':regular_user}, status=status.HTTP_202_ACCEPTED)
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.AllowAny,)
@@ -123,21 +125,10 @@ class LogoutView(views.APIView):
         print("POST params:", request.POST)  # Parametry POST
         print("Dane plików:", request.FILES)  # Dane plików przesłanych z formularza
         if request.user.is_authenticated:
-            print("wykonuje logout w django1")
             logout(request)
-            print("wykonuje logout w django2")
-            #request.session.flush()  # Usunięcie wszystkich kluczy sesji
-            print("wykonuje logout w django3")
             response = JsonResponse({"detail": "Successfully logged out."})
-            print("wykonuje logout w django4")
-            
-            #response.delete_cookie('sessionid', path='/')  # Usunięcie ciasteczka sessionid
-            #response.delete_cookie('csrftoken', path='/')  # Usunięcie ciasteczka csrftoken
         else:
             response = JsonResponse({"detail": "You are not logged in."})
-            #request.session.flush()
-            #response.delete_cookie('sessionid', path='/')  # Usunięcie ciasteczka sessionid
-            #response.delete_cookie('csrftoken', path='/')  # Usunięcie ciasteczka csrftoken
         return response
     
     '''def get(self, request, format=None):

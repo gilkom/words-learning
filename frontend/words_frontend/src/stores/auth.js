@@ -6,6 +6,7 @@ const initialState = {
     loggedIn: false,
     userData: null,
     id: null,
+    regular: null,
 };
 
 let storedState = initialState;
@@ -21,11 +22,12 @@ if (browser) {
 export const authStore = writable(storedState);
 
 // Funkcje pomocnicze
-export function setLoggedIn(isLoggedIn, username, id) {
+export function setLoggedIn(isLoggedIn, username, id, regular) {
     authStore.update(store => {
         store.loggedIn = isLoggedIn;
         store.userData = username;
         store.id = id;
+        store.regular = regular
         if (browser) {
             localStorage.setItem('authState', JSON.stringify(store));
         }
@@ -35,7 +37,7 @@ export function setLoggedIn(isLoggedIn, username, id) {
 
 export const logout = () => {
     authStore.update(state => {
-        return { ...state, loggedIn: false, userData: null, id: null };
+        return { ...state, loggedIn: false, userData: null, id: null, regular: true};
     });
     if (browser) {
         localStorage.removeItem('authState');

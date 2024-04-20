@@ -21,8 +21,8 @@
 
             if (response.ok) {
                 const data = await response.json();
-                setLoggedIn(true, data.username, data.id);
-                localStorage.setItem('authState', JSON.stringify({ loggedIn: true, userData: data.username, id: data.id }));
+                setLoggedIn(true, data.username, data.id, data.regular);
+                localStorage.setItem('authState', JSON.stringify({ loggedIn: true, userData: data.username, id: data.id, regular: data.regular}));            
             } else {
                 const data = await response.json();
                 throw new Error(data.error);
@@ -35,7 +35,7 @@
     onMount(() => {
         const authState = localStorage.getItem('authState');
         if (authState) {
-            const { loggedIn, userData, id } = JSON.parse(authState);
+            const { loggedIn, userData, id, regular, } = JSON.parse(authState);
             setLoggedIn(loggedIn, userData, id);
         }
 });
